@@ -1,0 +1,792 @@
+
+let g:ycm_path_to_python_interpreter="/usr/local/bin/python3"
+let g:loaded_python_provider = 1
+let g:python_host_skip_check=1
+let g:python_host_prog = '/usr/local/bin/python'
+let g:python3_host_skip_check=1
+let g:python3_host_prog = '/usr/local/bin/python3'
+
+set guicursor=i:blinkon1-block,v:ver1,n:block
+
+" Make vim behave like vim rather than like vi
+set nocompatible
+
+" going to use this until it comes back to bite me...
+" Implication here is that following a tag to another
+" file will write the current file if modified
+set autowrite
+
+" Shift-M shortcut to execute make
+set makeprg=make
+let g:asyncrun_open = 16
+let g:asyncrun_timer = 250
+map <S-M> :w<CR>:AsyncRun make<CR>
+map <S-R> :w<CR>:AsyncRun make debug<CR>
+map <S-N> :cclose<CR>
+
+" GIT related integration
+"    Ctrl-D  to diff working copy
+"    Ctrl-E  to go back to editing
+"    Ctrl-C  to commit working copy
+"    Ctrl-S  to list repository status
+"    Ctrl-L  to list current directory
+"    Enter   when over item in the list, it opens it
+map <C-D> :diffthis<CR>:set splitright \| vnew DiffView \| r!git show HEAD:./#<CR>:diffthis<CR><C-W>W1G
+map <C-E> <C-W><C-W>:q!<CR>:SideView<CR><C-W><C-W>
+map <C-C> :term git commit %:p<CR>
+map <C-A> :!git add %:p<CR>
+map <C-S> :15new \| r!sgit status<CR>1G
+map <C-L> :SideView<CR>1G<S-V>Gd:setlocal modifiable<CR>:r!echo .. && find ./* -maxdepth 0<CR>1G:setlocal nomodifiable nomodified<CR>
+
+" Terminal window
+map ~ :ToggleTerm<CR>
+tnoremap ~ <C-\><C-N>:ToggleTerm<CR><DOWN><UP>
+
+" Open Help, follow links
+map <ESC><ESC> :call ShowHelp()<CR>
+map <CR> $b:exec "Open " . expand("<cfile>")<CR>
+
+"
+" Defaults for Bash-Support Vim plugin
+"
+let g:BASH_AuthorName   = $USER_NAME
+let g:BASH_AuthorRef    = $USER_REF
+let g:BASH_Email        = $USER_EMAIL
+
+"
+" Appearance settings
+"
+set guifont=Monaco:h13
+
+" Setup the plugin manager, use with :Plug
+call plug#begin('~/.vim/plugged')
+Plug 'dbgx/lldb.nvim'
+Plug 'dbgx/asyncrun.vim'
+Plug 'junegunn/vim-easy-align'
+call plug#end()
+
+
+"  My personal preference on Mac with no PgUp/PgDn
+"  Don't need up,down,left,right mapping if have arrow keys so make these keys more useful
+"  On keyboard the keys are arranged  H L J K so for latin based language readers, it makes
+"  logical sense that H goes left/prev char and K goes right/next char, but normally L goes
+"  down and J goes up which makes no sense to me. Logically L should go up/prev line and K
+"  go down/next line to be consistent. So I have remapped them as follows:
+"       H   ->  go to beginning of the current line
+"       L   ->  go to the end of the current line
+"       J   ->  go up a page
+"       K   ->  go down a page
+"  If you want to move about by characters, there are the arrow keys
+" map h  ^
+" map l  $
+map j  <PageUp>
+map k  <PageDown>
+
+
+" Lets various keys like ^S and ^Q pass through to vim, rather than caught by the terminal
+silent !stty -ixon > /dev/null 2>/dev/null
+
+" Quit all (without writing)
+map <C-Q> :qa!<CR>
+
+" Next/Prev error in list
+map <C-N> :cn<CR>
+map <C-P> :cp<CR>
+map > :cn<CR>
+map < :cp<CR>
+
+
+
+" Next/Prev location of tag
+map <C-X> :tn<CR>
+map <C-Z> :tp<CR>
+
+" CSCOPE:
+" :map <C-??> :cscope find c <C-R><C-W><CR>
+set cst   " This replaces tag support with cscope,
+"            but actually want both, 'space' for tags, 'Ctrl-space' for cscope 
+set csto=0
+set nocsverb
+
+" Avoids saving out extra new line at end of file
+set noendofline binary
+
+" Assuming cscope output is in the current directory
+" add any database in current directory
+if filereadable("cscope.out")
+  cs add cscope.out
+" else add database pointed to by environment
+elseif $CSCOPE_DB != ""
+  cs add $CSCOPE_DB
+endif
+set csverb
+
+" split versions:
+nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>a :cs find a <C-R>=expand("<cword>")<CR><CR>
+" usage:
+"  :cscope find <option> <pattern>
+" cscope find options:
+" 0 or s: Find this C symbol
+" 1 or g: Find this definition
+" 2 or d: Find functions called by this function
+" 3 or c: Find functions calling this function
+" 4 or t: Find this text string
+" 6 or e: Find this egrep pattern
+" 7 or f: Find this file
+" 8 or i: Find files #including this file
+" 9 or a: Find places where this symbol is assigned a value
+
+" Indentation and tab settings
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+
+" This prevents extra indentation for public/private/protected scopes and for namespaces
+set cino=g0,N-s
+
+map <space> <C-]>
+map <C-space> :cscope find c <C-R><C-W><CR>
+map <tab> <C-O>
+map <s-tab> <C-I>
+
+" Debugging options:
+map <C-b> <Plug>LLBreakSwitch
+map <S-T> :LLsession load lldb-nvim.json<CR>:LLmode debug<CR>
+" map b <Plug>LLBreakSwitch
+map r :LL run<CR>
+map c :LL continue<CR>
+map s :LL step<CR>
+
+" OmniCppComplete
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+
+" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+
+set completeopt=menuone,menu,longest,preview
+
+" Tab or Enter will either complete the selected completion, or if none are
+" highlighted it will choose the first one in the list
+inoremap <expr> <CR>  pumvisible() ? "<C-Y><C-X><C-O><C-N><C-N><C-P> <BS>" : "<CR>"
+
+function! SmartTabComplete()
+	let line = getline('.')
+	let column = col('.')
+  if (column==1)
+		return 0    " dont tab complete if at beginning of a line
+  endif
+  if (strlen(matchstr(strpart(line, column-2, 2), "[^ \t]*"))==0)
+    return 0    " dont tab complete if current character is whitespace
+  endif
+  if (strlen(matchstr(strpart(line, column-1, 1), "$"))!=0)
+    return 1    " do tab complete if current character is end-of-line
+  endif
+  return strlen(matchstr(strpart(line, column-1, 1), "[~^ \t]"))  " do tab complete if non-whitespace under cursor to match on
+  " return strlen(matchstr(strpart(line, -1, column+1), "[^ \t]*"))  " do tab complete if non-whitespace under cursor to match on
+endfunction
+
+" Map 'tab' key to either insert a tab character or to bring up the auto-complete dialog based on SmartTabComplete heuristics
+inoremap <expr> <tab> pumvisible() ? "<Down><CR>" : SmartTabComplete() ? "<C-N>" : "<TAB>"
+
+set shiftround
+set autoindent
+
+map Q :"    Q enters EX mode.  You don't want EX mode.
+
+syn keyword cType           uchar ushort uint ulong
+syn keyword cType           pchar puchar pcchar
+syn keyword cType           Q_INT8 Q_INT16 Q_INT32 Q_LONG
+syn keyword cType           Q_UINT8 Q_UINT16 Q_UINT32 Q_ULONG
+syn keyword cConstant       TRUE FALSE
+syn keyword cStorageClass   Q_EXPORT
+
+filetype on
+
+set smartcase
+set incsearch
+set hlsearch
+
+" Spelling
+let IspellLang = 'british'
+let PersonalDict = '~/.ispell_' . IspellLang
+
+abbreviate teh the
+
+" * Keystrokes -- Moving Around
+
+" have the h and l cursor keys wrap between lines (like <Space> and <BkSpc> do
+" by default), and ~ covert case over line breaks; also have the cursor keys
+" wrap in insert mode:
+set whichwrap=h,l,~,[,]
+
+" use <F6> to cycle through split windows (and <Shift>+<F6> to cycle backwards,
+" where possible):
+nnoremap <F6> <C-W>w
+nnoremap <S-F6> <C-W>W
+
+" have % bounce between angled brackets, as well as t'other kinds:
+set matchpairs+=<:>
+
+" have <F1> prompt for a help topic, rather than displaying the introduction
+" page, and have it do this from any mode:
+nnoremap <F1> :help<Space>
+vmap <F1> <C-C><F1>
+omap <F1> <C-C><F1>
+map! <F1> <C-C><F1>
+
+" * Keystrokes -- Formatting
+
+" Reformats the current function
+map Q ]}=%
+
+" have the usual indentation keystrokes still work in visual mode:
+vnoremap <C-T> >
+vnoremap <C-D> <LT>
+vmap <Tab> <C-T>
+vmap <S-Tab> <C-D>
+
+" have Y behave analogously to D and C rather than to dd and cc (which is
+" already done by yy):
+noremap Y y$
+
+" * Keystrokes -- Insert Mode
+
+" insertion, and over indentations:
+set backspace=eol,start,indent
+set errorformat=%A%f:%l:%m,%C\ \ \ %m,%*[^\"]\"%f\"%*\\D%l:\ %m,\"%f\"%*\\D%l:\ %m,%-G%f:%l:\ (Each\ undeclared\ identifier\ is\ reported\ only\ once,%-G%f:%l:\ for\ each\ function\ it\ appears\ in.),%f:%l:%m,\"%f\"\,\ line\ %l%*\\D%c%*[^\ ]\ %m,%D%*\\a[%*\\d]:\ Entering\ directory\ `%f',%X%*\\a[%*\\d]:\ Leaving\ directory\ `%f',%DMaking\ %*\\a\ in\ %f
+
+" Spelling
+" Done below for specific file-types
+if !exists("autocmd_loaded")
+    let autocmd_loaded = 1
+    autocmd BufNewFile,BufRead *.cpp,*.hpp,*.c,*.h,*.md,*.txt,*.qdoc,*.doc setlocal spell spelllang=en
+    autocmd BufNewFile,BufRead *.doc,*.qdoc,*.book,*.leaf set filetype=doc
+    " autocmd BufNewFile,BufRead *.pro,*.pri set filetype=pro
+    autocmd BufNewFile,BufRead *akefile*,*.pro,*.inc,*.mak set noexpandtab
+    autocmd BufNewFile,BufRead *akefile*,*.pro,*.inc,*.mak set filetype=make
+endif
+
+" Remember the position of the cursor from previous edits
+autocmd BufReadPost *
+\ if expand("<afile>:p:h") !=? $TEMP |
+\   if line("'\"") > 0 && line("'\"") <= line("$") |
+\     exe "normal g`\"" |
+\     let b:doopenfold = 1 |
+\   endif |
+\ endif
+
+" Need to postpone using "zv" until after reading the modelines.
+autocmd BufWinEnter *
+\ if exists("b:doopenfold") |
+\   unlet b:doopenfold |
+\   exe "normal zv" |
+\ endif 
+
+set ruler
+set number
+set foldmarker=fold-start,fold-end
+set foldmethod=marker
+
+function! s:win_by_bufname(bufname)
+    let bufmap = map(range(1, winnr('$')), '[bufname(winbufnr(v:val)), v:val]')
+    let thewindow = filter(bufmap, 'v:val[0] =~ a:bufname')[0][1]
+    execute thewindow 'wincmd w'
+endfunction
+command! -nargs=* WinGo call s:win_by_bufname(<q-args>)
+
+function! TreeViewFoldLevel(lineNum)
+  let line=getline(a:lineNum)
+  if line=~'^.  .  ┗.*'
+    return '>4'
+  endif
+  if line=~'^.  ┗.*'
+    return '>3'
+  endif
+  if line=~'^┗.*'
+    return '>2'
+  endif
+  if line=~'^.  .  ┣.*'
+    return '>4'
+  endif
+  if line=~'^.  ┣.*'
+    return '>3'
+  endif
+  if line=~'^┣.*'
+    return '>2'
+  endif
+
+  let line1=line " getline(a:lineNum+1)
+  if line1=~'^.  .  ┗━  .*'
+    return '4'
+  endif
+  if line1=~'^.  ┗━  .*'
+    return '3'
+  endif
+  if line1=~'^┗━  .*'
+    return '2'
+  endif
+  if line1=~'^.  .  ┣━  .*'
+    return '4'
+  endif
+  if line1=~'^.  ┣━  .*'
+    return '3'
+  endif
+  if line1=~'^┣━  .*'
+    return '2'
+  endif
+
+  return '='
+endfunction
+
+
+function! s:GoToSideView()
+    let winnr = bufwinnr("SideView")
+    silent! execute winnr < 0 ? '35vnew ' . fnameescape("SideView") : winnr . 'wincmd w'
+    execute 'vert resize 35'
+    setlocal foldexpr=TreeViewFoldLevel(v:lnum)
+    setlocal foldexpr=TreeViewFoldLevel(v:lnum)
+    setlocal foldmethod=expr
+    setlocal foldtext=getline(v:foldstart)
+    setlocal foldlevel=2
+    " No modifications to this buffer  (easier to quit, implicit without saving)
+    execute 'normal zR'
+endfunction
+command! SideView call s:GoToSideView()
+
+
+" Toggles the Terminal view
+function! s:GoToTerminalView()
+    " Get the window number of the terminal view (if it exists, otherwise it
+    " returns -1)
+    let winnr = bufwinnr("term://*")
+    if winnr < 0
+      " Create the terminal view
+      execute '1new'
+      execute 'term bash'
+      for winsize in [1, 3, 6, 9, 12, 15, 20]
+        execute 'resize ' . winsize
+        silent! redraw
+      endfor
+      execute "normal! i"
+    else
+      " Get the current window number
+      let curwinnr = bufwinnr(bufname("%"))
+      " Compare the terminal window number with the current one
+      if winnr != curwinnr
+        " Switch to the terminal view
+        execute winnr . 'wincmd w'
+        for winsize in [3, 6, 9, 12, 15, 20]
+          execute 'resize ' . winsize
+          silent! redraw
+        endfor
+        execute "normal! i"
+      else
+        " Minimize the terminal view and go to the view below
+        for winsize in [16, 12, 9, 6, 3, 0]
+          execute 'resize ' . winsize
+          silent! redraw
+        endfor
+        execute 'wincmd j'
+      endif
+    endif
+endfunction
+command! ToggleTerm call s:GoToTerminalView()
+
+
+function! s:OpenInRightView(filename)
+    execute "let ln = line('.')"
+
+    if getwininfo(win_getid())[0].quickfix==1
+      execute 'cc ' . ln
+      " normal! :cc<CR>'
+      return
+    endif
+
+    execute 'normal! ^'
+    silent! redraw
+
+    let file1 = fnameescape(a:filename)
+    let paths = system('make paths')[:-2]
+    let syspaths = system('make system_paths')[:-2]
+    let file = findfile(file1, './ ' . paths . ' ' . syspaths)
+
+    if file==""
+      try
+        execute 'normal! za'
+      catch
+        try
+          execute 'normal! jzo'
+        catch
+          echom "Not a file or folder or fold under the cursor"
+          echom "giving up"
+        endtry
+      endtry
+      return
+    endif
+
+    if filereadable(file)
+      let count = winnr('$')
+      " map <CR> $b<C-W><C-L>:q<CR><C-W><C-H>:set splitright<CR><C-W>vgf<C-W><C-H>^:vert resize 30<CR><C-W><C-L>:set nosplitright<CR>
+      
+      execute 'set splitright'
+      silent! execute count < 2 ? 'vnew' : count . 'wincmd w'
+      
+      " TODO: this will edit the file in the last window which could be the
+      " quickfix window
+      let count = winnr('$')
+      execute 'set nosplitright'
+      execute '1wincmd w'
+      execute 'vert resize 35'
+      execute count . 'wincmd w'
+      execute 'edit ' . file
+      execute 'normal! ' . ln . 'G'
+      " execute 'wincmd l'
+    else
+      if isdirectory(file1)
+        execute 'silent normal! 1G'
+        execute 'silent visual! Gd'
+        execute 'r!echo "'. file1 . '/.." && find ' . file1 . '/* -maxdepth 0'
+      endif
+    endif
+endfunction
+command! -nargs=+ Open call s:OpenInRightView(<q-args>)
+
+function! s:PadLeft(text)
+  let count = (winwidth(0) - 47) / 2
+  let spaces = ""
+  for i in range(1, count)
+    " call append(line('.'), " ")
+    " call setline('$', getline('$') . " ")
+    let spaces .= " "
+  endfor
+  " call append(line('$'), a:text)
+  call append('$', "" . spaces . a:text)
+endfunction
+
+function! PrintHelp()
+  " Now we can just write to the buffer, whatever you want.
+  call s:PadLeft("                                             ")
+  call s:PadLeft("      John's .vimrc Extensions 1.0           ")
+  call s:PadLeft("                                             ")
+  call s:PadLeft("         " . split(system('vi --version'),'(')[0] )
+  call s:PadLeft('      ' . split(system('uname -v'),':')[0])
+  call s:PadLeft("                                             ")
+  call s:PadLeft("Navigation keys:                             ")
+  call s:PadLeft("   Ctrl-Q    to quit all (without saving)    ")
+  call s:PadLeft("   Shift-Q   to close window (without saving)")
+  call s:PadLeft("   Shft-WASD to switch between windows       ")
+  call s:PadLeft("   space     to follow link under cursor     ")
+  call s:PadLeft("   tab       to go back in cursor history    ")
+  call s:PadLeft("   Ctrl-T    to navigate back                ")
+  call s:PadLeft("   j / k     to page up or down              ")
+  call s:PadLeft("   [[ / ]]   next/prev code block            ")
+  call s:PadLeft("   %         move to matching pair           ")
+  call s:PadLeft("   Ctrl-I/O  fwd/back in cursor history      ")
+  call s:PadLeft("                                             ")
+  call s:PadLeft("Editing keys:                                ")
+  call s:PadLeft("   Q         reformat the current function   ")
+  call s:PadLeft("   zg        add word to spelling dictionary ")
+  call s:PadLeft("                                             ")
+  call s:PadLeft("Shell integration:                           ")
+  call s:PadLeft("   ~         to toggle terminal in window    ")
+  call s:PadLeft("                                             ")
+  call s:PadLeft("Compiling integration:                       ")
+  call s:PadLeft("   Shift-M   to execute make                 ")
+  call s:PadLeft("   Ctrl-N/X  to jump to next error           ")
+  call s:PadLeft("   Ctrl-P/Z  to jump to prev error           ")
+  call s:PadLeft("                                             ")
+  call s:PadLeft("Debugging integration:                       ")
+  call s:PadLeft("   Shift-T   to start debug session          ") 
+  call s:PadLeft("   Ctrl-B    to set breakpoint               ")
+  call s:PadLeft("   R/C/S     to run/continue/step            ")
+  call s:PadLeft("                                             ")
+  call s:PadLeft("SVN related integration:                     ")
+  call s:PadLeft("   Ctrl-A    to mark file for adding         ")
+  call s:PadLeft("   Ctrl-D    to diff working copy            ")
+  call s:PadLeft("   Ctrl-E    to go back to editing           ")
+  call s:PadLeft("   Ctrl-C    to commit working copy          ")
+  call s:PadLeft("   Ctrl-S    to list repository status       ")
+  call s:PadLeft("   Ctrl-L    to list current directory       ")
+  call s:PadLeft("   Enter     to open file from status list   ")
+  call s:PadLeft("                                             ")
+  call s:PadLeft("   :Help     show this help                  ")
+  call s:PadLeft("   :help     show vim help                   ")
+  call s:PadLeft("                                             ")
+  " No modifications to this buffer  (easier to quit, implicit without saving)
+  setlocal nomodifiable nomodified
+endfunction
+
+
+function! s:PadLeft2(text)
+  let count = (winwidth(0) - 30) / 2
+  let spaces = ""
+  for i in range(1, count)
+    " call append(line('.'), " ")
+    " call setline('$', getline('$') . " ")
+    let spaces .= " "
+  endfor
+  " call append(line('$'), a:text)
+  call append('$', "" . spaces . a:text)
+endfunction
+
+
+function! PrintNarrowHelp()
+  " Now we can just write to the buffer, whatever you want.
+  call s:PadLeft2("                          ")
+  call s:PadLeft2(" John's .vimrc Extensions ")
+  call s:PadLeft2("                          ")
+  call s:PadLeft2("Navigation:               ")
+  call s:PadLeft2(" Ctrl-Q    quit all       ")
+  call s:PadLeft2(" Shift-Q   close window   ")
+  call s:PadLeft2(" Shft-WASD switch windows ")
+  call s:PadLeft2(" space     follow link    ")
+  call s:PadLeft2(" tab       go back        ")
+  call s:PadLeft2(" Ctrl-T    navigate back  ")
+  call s:PadLeft2(" j / k     page up / down ")
+  call s:PadLeft2(" [[ / ]]   next/prev block")
+  call s:PadLeft2(" %         matching pair  ")
+  call s:PadLeft2(" Ctrl-I/O  fwd/back       ")
+  call s:PadLeft2("                          ")
+  call s:PadLeft2("Editing keys:             ")
+  call s:PadLeft2(" Q         reformat func  ")
+  call s:PadLeft2(" zg        add word 2 dict")
+  call s:PadLeft2("                          ")
+  call s:PadLeft2("Shell integration:        ")
+  call s:PadLeft2(" ~         toggle terminal")
+  call s:PadLeft2("                          ")
+  call s:PadLeft2("Compiling integration:    ")
+  call s:PadLeft2(" Shift-M   run make       ")
+  call s:PadLeft2(" Ctrl-N/X  next error     ")
+  call s:PadLeft2(" Ctrl-P/Z  prev error     ")
+  call s:PadLeft2("                          ")
+  call s:PadLeft2("Debugging:                ")
+  call s:PadLeft2(" Shift-T   start debugging") 
+  call s:PadLeft2(" Ctrl-B    set breakpoint ")
+  call s:PadLeft2(" R/C/S     run/cont/step  ")
+  call s:PadLeft2("                          ")
+  call s:PadLeft2("SVN integration:          ")
+  call s:PadLeft2(" Ctrl-A    mark for add   ")
+  call s:PadLeft2(" Ctrl-D    diff           ")
+  call s:PadLeft2(" Ctrl-E    back to editing")
+  call s:PadLeft2(" Ctrl-C    commit         ")
+  call s:PadLeft2(" Ctrl-S    status         ")
+  call s:PadLeft2(" Ctrl-L    list directory ")
+  call s:PadLeft2(" Enter     open file      ")
+  call s:PadLeft2("                          ")
+  call s:PadLeft2(" :Help     show this help ")
+  call s:PadLeft2(" :help     show vim help  ")
+  call s:PadLeft2("                          ")
+  " No modifications to this buffer  (easier to quit, implicit without saving)
+  setlocal nomodifiable nomodified
+endfunction
+
+function! ShowHelp()
+  vnew
+  execute 'vert resize 31'
+  call PrintNarrowHelp()
+endfunction
+
+
+:command Help call ShowHelp()
+
+
+function! ShowOnStartHelp()
+  " Only continue if started without opening a file or anything fancy
+  if argc() || line2byte('$') != -1 || v:progname !~? '^[-gmnq]\=vim\=x\=\%[\.exe]$' || &insertmode
+    return
+  endif
+
+  " Start a new buffer ...
+  enew
+
+  " ... and set some options for it
+  setlocal
+    \ bufhidden=wipe
+    \ buftype=nofile
+    \ nobuflisted
+    \ nocursorcolumn
+    \ nocursorline
+    \ nolist
+    \ nonumber
+    \ noswapfile
+    \ norelativenumber
+
+  call PrintHelp()
+
+  " No modifications to this buffer
+  setlocal nomodifiable nomodified
+
+  " When we go to insert mode start a new buffer, and start insert
+  nnoremap <buffer><silent> e :enew<CR>
+  nnoremap <buffer><silent> i :enew <bar> startinsert<CR>
+  nnoremap <buffer><silent> o :enew <bar> startinsert<CR>
+endfunction
+
+
+" Run after doing all the startup stuff
+autocmd VimEnter * call ShowOnStartHelp()
+
+
+" EasyTags is crap, too slow, don't use
+" let g:easytags_always_enabled = 1
+
+
+" My syntax highlighting magic
+function! CppSyntaxHighlighting()
+  " This is to avoid cpp.vim error when it is a .c buf
+	syn keyword cppStructure class
+
+  syn keyword cppOtherKeyword bool class struct void int unsigned float double virtual default const constexpr decltype nullptr noexcept dynamic_cast static_cast reinterpret_cast const_cast return operator override final public private protected for if do while case switch this try catch static_assert sizeof else using
+
+  " ctags kinds:
+  "
+  " C++
+  "     d  macro definitions
+  "     e  enumerators (values inside an enumeration)
+  "     f  function definitions
+  "     g  enumeration names
+  "     l  local variables [off]
+  "     m  class, struct, and union members
+  "     p  function prototypes [off]
+  "     s  structure names
+  "     t  typedefs
+  "     u  union names
+  "     v  variable definitions
+  "     x  external and forward variable declarations [off]
+  "     z  function parameters inside function definitions [off]
+  "     L  goto labels [off]
+  "     c  classes
+  "     n  namespaces
+  "     A  namespace aliases [off]
+  "     N  names imported via using scope::symbol [off]
+  "     U  using namespace statements [off]
+
+  if filereadable("./build/tags")
+    " Read the ctags .tags file and find all the types and add to the cppType syntax for coloring
+    set tags+=./build/tags " ,./build/system-tags         " Reading in the system-tags slows down running vim
+    let tags = taglist('^', '.tags')
+    let typeTags = filter(tags, "!empty(matchstr(v:val['kind'], '[csgunt]'))")
+    call map(typeTags, "v:val['name']")
+    exec 'syn keyword cppType ' . join(typeTags, " ")
+  endif
+
+  if filereadable(".tags")
+    " Read the ctags .tags file and find all the types and add to the cppType syntax for coloring
+    set tags+=.tags
+    let tags = taglist('^', '.tags')
+    let typeTags = filter(tags, "!empty(matchstr(v:val['kind'], '[csgunt]'))")
+    call map(typeTags, "v:val['name']")
+    exec 'syn keyword cppType ' . join(typeTags, " ")
+  endif
+
+  " Add the system tags
+  set tags+=~/.vim/tags/system_tags
+endfunction
+
+
+
+function! ShowProjectView()
+  " Map obsidian color scheme
+  runtime colors/obsidian.vim
+
+  if filereadable("Makefile")
+    let hasVimIntegration = system('make vim_project_support')
+    if hasVimIntegration=~'^true'
+      normal :SideView1GVGd:r!make project1Gdd:set nowrap:set cursorline
+
+      " Colorize the project list side-view
+      syn keyword ProjectHeading  Target Sources Includes Docs Project
+      let projectFiles = system('make dependancies')
+      let list = split(projectFiles, ' ')
+      for file in list
+        exec 'syn match ProjectFile ' . file
+      endfor
+      hi CursorLine     cterm=NONE ctermbg=1
+      hi StatusLine     cterm=bold ctermbg=Green ctermfg=15
+
+      hi ProjectHeading ctermfg=5
+      hi ProjectFile    ctermfg=3
+
+      " Switch to the editor window
+      execute 'wincmd l'
+    endif
+  endif
+endfunction
+
+
+" If starting up with a project file, how the project side-view
+autocmd VimEnter *.cpp,*.hpp,*.c,*.h,*.pro call ShowProjectView()
+
+
+" Key short-cuts for switching between views
+nmap <silent> <S-Left> :wincmd h<CR>
+nmap <silent> <S-Right> :wincmd l<CR>
+nmap <silent> <S-A> :wincmd h<CR>
+nmap <silent> <S-D> :wincmd l<CR>
+nmap <silent> <S-W> :wincmd k<CR>
+nmap <silent> <S-S> :wincmd j<CR>
+nmap <silent> <S-Q> :q!<CR>
+
+tnoremap <silent> <S-Left> <C-\><C-N>:wincmd h<CR>
+tnoremap <silent> <S-Right> <C-\><C-N>:wincmd l<CR>
+
+function! s:CustomBuildLine(line)
+  let cmd = split(a:line, '^// Build: ')[0]
+  exec 'set makeprg=' . escape(cmd, ' \')
+endfunction
+
+function! s:CustomFormatLine(line)
+  echom "Reading custom format commands"
+endfunction
+
+function! CheckCustomModeLines()
+  set makeprg=make
+  for linenr in [1,2,3,4,5]
+    let line = getline(linenr)
+    if line =~ "// Build: "  | call s:CustomBuildLine(line)  | endif
+    if line =~ "// Format: " | call s:CustomFormatLine(line) | endif
+  endfor
+endfunction
+
+hi clear SpellBad
+
+" Subtly highlight bad spelling in text files
+autocmd BufNewFile,BufRead *.md,*.txt,Makefile hi SpellBad ctermbg=1 ctermbg=NONE cterm=NONE
+
+" Vim help docs are hard to read/confusing with bad spelling highlighting
+autocmd BufNewFile,BufRead *vim/*doc/*.txt hi clear SpellBad
+
+" Use my custom syntax highlighting for code
+autocmd BufNewFile,BufRead *.cpp,*.hpp,*.c,*.h call CppSyntaxHighlighting()
+
+" Look up man pages in section 2 when editing code
+autocmd BufNewFile,BufRead *.cpp,*.hpp,*.c,*.h nmap K :Man 2 <C-R>=expand("<cword>")<CR><CR>
+
+" Read in custom mode-lines
+autocmd BufReadPost * call CheckCustomModeLines()
+
+syntax enable
+
+" Highlight the active window (status bar) and line (in side-view)
+augroup DimWindows
+  autocmd BufEnter SideView                  hi CursorLine term=reverse cterm=NONE ctermfg=White ctermbg=Green
+  autocmd BufEnter *.cpp,*.hpp,*.c,*.h,*.pro hi CursorLine ctermbg=1
+augroup end
+hi StatusLine     cterm=bold ctermbg=Green ctermfg=15
+
