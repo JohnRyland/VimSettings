@@ -3,8 +3,9 @@ Vim Settings
 
 Check this out and then symlink the Vimrc file to ~/.vimrc to have the same settings I use.
 
-Assumes various vim plugins/extensions etc are installed in your ~/.vim directory which should contain some of these:
+Assumes various vim plugins/extensions etc are installed in your ~/.vim which should contain these directories if they are installed:
 
+```
   .vim//plugged/vim-easy-align
   .vim//plugged/asyncrun.vim
   .vim//plugged/lldb.nvim
@@ -13,4 +14,4 @@ Assumes various vim plugins/extensions etc are installed in your ~/.vim director
   .vim//colors
   .vim//autoload/omni
   .vim//after/ftplugin
-
+```
