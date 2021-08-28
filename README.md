@@ -15,3 +15,5 @@ Assumes various vim plugins/extensions etc are installed in your ~/.vim which sh
   .vim//autoload/omni
   .vim//after/ftplugin
 ```
+
+Inside vim, you can type `:Help` to display some of the commands this adds that I commonly use. Try typing '~' :)
