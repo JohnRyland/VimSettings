@@ -19,7 +19,7 @@ Assumes various vim plugins/extensions etc are installed in your ~/.vim which sh
 Inside vim, you can type `:Help` to display some of the commands this adds that I commonly use. Try typing `~`, and `~` to close it again :)
 
 
-[Example Screenshot](screenshot.png)
+![Example Screenshot](screenshot.png)
 
 ### Example Screenshot
 
