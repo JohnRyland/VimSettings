@@ -19,9 +19,16 @@ Assumes various vim plugins/extensions etc are installed in your ~/.vim which sh
 Inside vim, you can type `:Help` to display some of the commands this adds that I commonly use. Try typing `~`, and `~` to close it again :)
 
 
-![Example Screenshot](screenshot2.png)
+![Auto Completiont](screenshot2.png)
 
-### Example Screenshot
+### Auto-completion
+
+If using these Vim extensions in-conjunction with the GenericMakefile which can be used to build your project, you will be able to have a
+project tree view to the side which when highlighting an item and press `<Enter>` will open that file.
+
+![Project Integration](screenshot3.png)
+
+### Project Integration
 
 ## Some helpful commands:
 
