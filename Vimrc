@@ -781,12 +781,21 @@ autocmd BufNewFile,BufRead *.cpp,*.hpp,*.c,*.h nmap K :Man 2 <C-R>=expand("<cwor
 " Read in custom mode-lines
 autocmd BufReadPost * call CheckCustomModeLines()
 
-syntax enable
-
 " Highlight the active window (status bar) and line (in side-view)
 augroup DimWindows
   autocmd BufEnter SideView                  hi CursorLine term=reverse cterm=NONE ctermfg=White ctermbg=Green
   autocmd BufEnter *.cpp,*.hpp,*.c,*.h,*.pro hi CursorLine ctermbg=1
 augroup end
 hi StatusLine     cterm=bold ctermbg=Green ctermfg=15
+
+" Highlight pass/fail/warning/error in quickfix output window
+autocmd WinEnter * if &buftype == 'quickfix' | syntax keyword qfOkay ok okay Ok Okay OK pass Pass PASS passed Passed PASSED
+autocmd WinEnter * if &buftype == 'quickfix' | syntax keyword qfWarning warn Warn WARN warning Warning WARNING
+autocmd WinEnter * if &buftype == 'quickfix' | syntax keyword qfError Error error fail Fail FAIL failure Failure FAILURE | endif
+autocmd WinEnter * if &buftype == 'quickfix' | hi qfOkay term=reverse cterm=bold ctermfg=3 ctermbg=5 gui=NONE guifg=3 guibg=5 | endif
+autocmd WinEnter * if &buftype == 'quickfix' | hi qfWarning term=reverse cterm=bold ctermfg=White ctermbg=10 gui=NONE guifg=Blue guibg=Red | endif
+autocmd WinEnter * if &buftype == 'quickfix' | hi qfError term=reverse cterm=underline ctermfg=Red ctermbg=10 gui=NONE guifg=Red guibg=Yellow | endif
+
+syntax enable
+
 
