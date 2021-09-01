@@ -20,13 +20,15 @@ Inside vim, you can type `:Help` to display some of the commands this adds that 
 
 ### Auto-completion
 
+When typing, pressing tab can bring up a list of auto-completions.
+
 ![Auto Completiont](screenshot2.png)
 
 
+### Project Integration
+
 If using these Vim extensions in-conjunction with the GenericMakefile which can be used to build your project, you will be able to have a
 project tree view to the side which when highlighting an item and press `<Enter>` will open that file.
-
-### Project Integration
 
 ![Project Integration](screenshot3.png)
 
