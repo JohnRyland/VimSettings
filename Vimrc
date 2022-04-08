@@ -711,7 +711,7 @@ function! ShowProjectView()
       normal :SideView1GVGd:r!make project1Gdd:set nowrap:set cursorline
 
       " Colorize the project list side-view
-      syn keyword ProjectHeading  Target Sources Includes Docs Project
+      syn keyword ProjectHeading  Targets Target Sources Headers Includes Docs Project
       let projectFiles = system('make dependancies')
       let list = split(projectFiles, ' ')
       for file in list
