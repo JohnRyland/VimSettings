@@ -811,7 +811,7 @@ function! CheckIfCanQuit()
 endfunction
 
 " Quit if it is just a scratch/temp view left
-autocmd BufLeave * call CheckIfCanQuit()
+autocmd WinClosed * call CheckIfCanQuit()
 
 syntax enable
 
