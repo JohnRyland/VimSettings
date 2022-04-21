@@ -446,13 +446,11 @@ function! s:OpenInRightView(filename)
       
       execute 'set splitright'
       silent! execute count < 2 ? 'vnew' : count . 'wincmd w'
-      
-      " TODO: this will edit the file in the last window which could be the
-      " quickfix window
-      let count = winnr('$')
+
       execute 'set nosplitright'
       execute '1wincmd w'
       execute 'vert resize 35'
+      let count = winnr('1l') " get the window to the right of it
       execute count . 'wincmd w'
       execute 'edit ' . file
       execute 'normal! ' . ln . 'G'
