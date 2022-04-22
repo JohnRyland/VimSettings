@@ -22,7 +22,7 @@ let g:asyncrun_open = 16
 let g:asyncrun_timer = 250
 map <S-M> :w<CR>:AsyncRun make<CR>
 map <S-R> :w<CR>:AsyncRun make debug<CR>
-map <S-N> :cclose<CR>
+" map <S-N> :cclose<CR>
 
 " GIT related integration
 "    Ctrl-D  to diff working copy
@@ -361,7 +361,8 @@ function! s:GoToSideView()
     execute 'vert resize 35'
     setlocal foldexpr=TreeViewFoldLevel(v:lnum)
     setlocal foldexpr=TreeViewFoldLevel(v:lnum)
-    setlocal foldmethod=expr
+    " TODO: figure out why the folding stopped working with a change to Generic.mak
+    "setlocal foldmethod=expr
     setlocal foldtext=getline(v:foldstart)
     setlocal foldlevel=2
     " No modifications to this buffer  (easier to quit, implicit without saving)
@@ -706,15 +707,17 @@ function! ShowProjectView()
   if filereadable("Makefile")
     let hasVimIntegration = system('make vim_project_support')
     if hasVimIntegration=~'^true'
+      " TODO: figure out how to do this without the <CR> characters as ^M chars
       normal :SideView1GVGd:r!make project1Gdd:set nowrap:set cursorline
 
       " Colorize the project list side-view
-      syn keyword ProjectHeading  Targets Target Sources Headers Includes Docs Project
+      syn keyword ProjectHeading  Targets Target Sources Headers Subprojects Includes Docs Project
       let projectFiles = system('make dependancies')
       let list = split(projectFiles, ' ')
       for file in list
         exec 'syn match ProjectFile ' . file
       endfor
+      hi CursorLineNr   cterm=NONE ctermbg=1
       hi CursorLine     cterm=NONE ctermbg=1
       hi StatusLine     cterm=bold ctermbg=Green ctermfg=15
 
@@ -813,4 +816,9 @@ autocmd WinClosed * call CheckIfCanQuit()
 
 syntax enable
 
+" Indentation and tab settings
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
 
