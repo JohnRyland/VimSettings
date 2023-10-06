@@ -64,6 +64,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'dbgx/lldb.nvim'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'chriskempson/base16-vim'
 call plug#end()
 
 
