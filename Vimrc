@@ -22,6 +22,7 @@ let g:asyncrun_open = 16
 let g:asyncrun_timer = 250
 map <S-M> :w<CR>:AsyncRun make<CR>
 map <S-R> :w<CR>:AsyncRun make -s FOR_FILE="%" debug<CR>
+"map <S-R> :w<CR>:AsyncRun FOR_FILE="%" make -s debug<CR>
 " map <S-N> :cclose<CR>
 
 " GIT related integration
@@ -61,7 +62,7 @@ set guifont=Monaco:h13
 " Setup the plugin manager, use with :Plug
 call plug#begin('~/.vim/plugged')
 Plug 'dbgx/lldb.nvim'
-Plug 'dbgx/asyncrun.vim'
+Plug 'skywind3000/asyncrun.vim'
 Plug 'junegunn/vim-easy-align'
 call plug#end()
 
@@ -225,6 +226,7 @@ set hlsearch
 " Spelling
 let IspellLang = 'british'
 let PersonalDict = '~/.ispell_' . IspellLang
+set spellfile=~/.vim/spell/en.utf-8.add
 
 abbreviate teh the
 
@@ -467,9 +469,9 @@ endfunction
 command! -nargs=+ Open call s:OpenInRightView(<q-args>)
 
 function! s:PadLeft(text)
-  let count = (winwidth(0) - 47) / 2
+  let pad-count = (winwidth(0) - 47) / 2
   let spaces = ""
-  for i in range(1, count)
+  for i in range(1, pad-count)
     " call append(line('.'), " ")
     " call setline('$', getline('$') . " ")
     let spaces .= " "
