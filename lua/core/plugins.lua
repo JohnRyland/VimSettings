@@ -14,25 +14,36 @@ local packer_bootstrap = ensure_packer()
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   use 'ellisonleao/gruvbox.nvim'
-  use 'nvim-tree/nvim-tree.lua'
   use 'nvim-tree/nvim-web-devicons'
   use 'nvim-lualine/lualine.nvim'
   use 'nvim-treesitter/nvim-treesitter'
   use 'nvim-lua/plenary.nvim'
   use 'nvim-telescope/telescope.nvim'
-  use 'akinsho/bufferline.nvim'
   use 'nvimdev/dashboard-nvim'
+  --use 'nvim-tree/nvim-tree.lua'
+  use 'MunifTanjim/nui.nvim'
+  use 'nvim-neo-tree/neo-tree.nvim'
+  use 'akinsho/bufferline.nvim'
+  use 'ghillb/cybu.nvim'
+  use 's1n7ax/nvim-terminal'
 
-  -- use 'adelarsq/neoline.vim'
+  --use 'ten3roberts/qf.nvim'
 
+  --use 'yorickpeterse/nvim-window'
+  --use 'ten3roberts/window-picker.nvim'
+  --use 'nanozuki/tabby.nvim'
+  --use 'backdround/tabscope.nvim'
+  --use 'tiagovla/scope.nvim'
+  --use 'adelarsq/neoline.vim'
+
+  -- # language lsp
+  use 'neovim/nvim-lspconfig'
+  use 'nvim-lua/lsp-status.nvim'
+  --use 'nvim-lua/completion.nvim'
   use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
 
-  use 'neovim/nvim-lspconfig'
-  use 'nvim-lua/completion.nvim'
-  use 'nvim-lua/lsp-status.nvim'
-  -- use 'nvimdev/lspsaga.nvim'
   use ({
     'nvimdev/lspsaga.nvim',
     after = 'nvim-lspconfig',
@@ -41,25 +52,24 @@ return require('packer').startup(function(use)
     end,
   })
 
+  -- # git
   use {
     'tanvirtin/vgit.nvim',
     requires = {
       'nvim-lua/plenary.nvim'
     }
   }
-
   use 'nvim-telescope/telescope-file-browser.nvim'
-  -- use 'glepnir/lspsaga.nvim'
   use 'lewis6991/gitsigns.nvim'
   use 'dinhhuy258/git.nvim'
 
-  -- color schemes
-  use 'shaunsingh/nord.nvim'
+  -- # color schemes
   use 'AlexvZyl/nordic.nvim'
-  use 'sainnhe/everforest'
-  use 'sainnhe/edge'
   use 'savq/melange-nvim'
-  use 'svrana/neosolarized.nvim'
+  --use 'shaunsingh/nord.nvim'
+  --use 'sainnhe/everforest'
+  --use 'sainnhe/edge'
+  --use 'svrana/neosolarized.nvim'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
@@ -67,3 +77,4 @@ return require('packer').startup(function(use)
     require('packer').sync()
   end
 end)
+
