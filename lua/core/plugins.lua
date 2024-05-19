@@ -12,64 +12,61 @@ end
 local packer_bootstrap = ensure_packer()
 
 return require('packer').startup(function(use)
+  -- this plugin system
   use 'wbthomason/packer.nvim'
+  -- themes
   use 'ellisonleao/gruvbox.nvim'
+  -- icons  
   use 'nvim-tree/nvim-web-devicons'
+  -- status bar
   use 'nvim-lualine/lualine.nvim'
+  -- syntax highlighting
   use 'nvim-treesitter/nvim-treesitter'
+  -- dependancy - async library
   use 'nvim-lua/plenary.nvim'
+  -- searching
   use 'nvim-telescope/telescope.nvim'
+  -- start page
   use 'nvimdev/dashboard-nvim'
-  --use 'nvim-tree/nvim-tree.lua'
+  -- dependancy - ui library
   use 'MunifTanjim/nui.nvim'
+  -- file explorer side-view
   use 'nvim-neo-tree/neo-tree.nvim'
+  -- tabbed open buffers
   use 'akinsho/bufferline.nvim'
+  -- cycle between buffers
   use 'ghillb/cybu.nvim'
+  -- terminal
   use 's1n7ax/nvim-terminal'
+  -- show key-mappings
+  use 'folke/which-key.nvim'
+  -- smooth scolling
+  use 'yuttie/comfortable-motion.vim'
 
+  -- lsp - language support package
+  use 'neovim/nvim-lspconfig'
+  use 'nvim-lua/lsp-status.nvim'
+  use 'hrsh7th/nvim-cmp'
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
+  use 'nvimdev/lspsaga.nvim'
+
+  -- git
+  use 'tanvirtin/vgit.nvim'
+  use 'nvim-telescope/telescope-file-browser.nvim'
+  use 'dinhhuy258/git.nvim'
+  use 'lewis6991/gitsigns.nvim'
+  
+  -- alternatives / other plugins tried
+  --use 'nvim-tree/nvim-tree.lua'
   --use 'ten3roberts/qf.nvim'
-
   --use 'yorickpeterse/nvim-window'
   --use 'ten3roberts/window-picker.nvim'
   --use 'nanozuki/tabby.nvim'
   --use 'backdround/tabscope.nvim'
   --use 'tiagovla/scope.nvim'
   --use 'adelarsq/neoline.vim'
-
-  -- # language lsp
-  use 'neovim/nvim-lspconfig'
-  use 'nvim-lua/lsp-status.nvim'
   --use 'nvim-lua/completion.nvim'
-  use 'hrsh7th/nvim-cmp'
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-buffer'
-
-  use ({
-    'nvimdev/lspsaga.nvim',
-    after = 'nvim-lspconfig',
-    config = function()
-        require('lspsaga').setup({})
-    end,
-  })
-
-  -- # git
-  use {
-    'tanvirtin/vgit.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim'
-    }
-  }
-  use 'nvim-telescope/telescope-file-browser.nvim'
-  use 'lewis6991/gitsigns.nvim'
-  use 'dinhhuy258/git.nvim'
-
-  -- # color schemes
-  use 'AlexvZyl/nordic.nvim'
-  use 'savq/melange-nvim'
-  --use 'shaunsingh/nord.nvim'
-  --use 'sainnhe/everforest'
-  --use 'sainnhe/edge'
-  --use 'svrana/neosolarized.nvim'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

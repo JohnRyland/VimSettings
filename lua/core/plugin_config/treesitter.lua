@@ -1,3 +1,4 @@
+
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
   ensure_installed = { "asm", "c", "cpp", "lua", "rust", "ruby", "vim", "html" },
@@ -12,3 +13,4 @@ require'nvim-treesitter.configs'.setup {
     enable = true,
   },
 }
+

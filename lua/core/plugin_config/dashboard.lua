@@ -2,6 +2,7 @@
 require('dashboard').setup{
   config = {
     shortcut = {
+      { desc = 'Which Key',       key = '?' },
       { desc = 'File Explorer',   key = '<Sp>-T' },
       { desc = 'Toggle Explorer', key = '<Sp>-N' },
       { desc = 'Recent',          key = '<Sp><Sp>' },

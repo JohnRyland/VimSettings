@@ -3,7 +3,7 @@
 -- require('nvim-lspconfig')
 -- require('lspsaga').setup{}
 
-local nvim_lsp = require "lspconfig"
+local nvim_lsp = require("lspconfig")
 local lsp_status = require("lsp-status")
 
 -- function to attach completion when setting up lsp

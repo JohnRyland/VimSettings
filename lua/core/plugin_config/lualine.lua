@@ -1,14 +1,14 @@
+
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'nordic',
+    theme = 'nord',
   },
   sections = {
-    lualine_a = {
-      {
+    lualine_a = { {
         'filename',
         path = 1,
-      }
-    }
+    } }
   }
 }
+
