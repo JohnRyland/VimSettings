@@ -4,6 +4,10 @@ vim.g.maplocalleader = ' '
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+--vim.opt.updatetime = 1000
+--vim.opt.incsearch = false
+--vim.wo.signcolumn = 'yes'
+
 vim.opt.hidden = true
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
@@ -24,4 +28,7 @@ vim.opt.showtabline = 2
 vim.opt.sessionoptions = 'buffers,curdir,folds,globals,help,tabpages,terminal,winsize'
 
 vim.api.nvim_set_option("clipboard", "unnamed")
+
+vim.g.comfortable_motion_no_default_key_mappings = 1
+
 

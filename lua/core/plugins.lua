@@ -42,6 +42,8 @@ return require('packer').startup(function(use)
   use 'folke/which-key.nvim'
   -- smooth scolling
   use 'yuttie/comfortable-motion.vim'
+  -- nvim plugin performance profiling
+  use 'stevearc/profile.nvim'
 
   -- lsp - language support package
   use 'neovim/nvim-lspconfig'
@@ -50,6 +52,11 @@ return require('packer').startup(function(use)
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
   use 'nvimdev/lspsaga.nvim'
+  use 'L3MON4D3/LuaSnip'
+
+  -- markdown
+  -- use 'iamcco/markdown-preview.nvim'
+  -- use({ "iamcco/markdown-preview.nvim", run = function() vim.fn["mkdp#util#install"]() end, })
 
   -- git
   use 'tanvirtin/vgit.nvim'
@@ -66,7 +73,8 @@ return require('packer').startup(function(use)
   --use 'backdround/tabscope.nvim'
   --use 'tiagovla/scope.nvim'
   --use 'adelarsq/neoline.vim'
-  --use 'nvim-lua/completion.nvim'
+  -- Tab completion
+  --use 'nvim-lua/completion-nvim'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

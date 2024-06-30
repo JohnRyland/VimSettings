@@ -31,7 +31,7 @@ vim.keymap.set('n', '<leader>q', ':Telescope quickfix<CR>')
 vim.keymap.set('n', '<leader>m', ':Telescope man_pages sections={"ALL"}<CR>')
 
 -- Run make
-vim.keymap.set("n", "<s-m>", ":make<CR>:cw<CR>")
+vim.keymap.set("n", "<s-m>", ":make debug<CR>:cw<CR>")
 
 -- Cycle through quick fix list
 vim.keymap.set("n", "<c-n>", ":cn<CR>")
@@ -54,4 +54,8 @@ vim.keymap.set('n', '<leader>t', ':Neotree toggle<CR>')
 --vim.keymap.set('n', '<leader>t', ':NvimTreeFocus<CR>')
 --vim.keymap.set('n', '<leader>n', ':NvimTreeFindFileToggle<CR>')
 --vim.keymap.set("qf", "<s-tab>", [[:wincmd w<CR>]])
+
+vim.keymap.set('n', '<ScrollWheelDown>', ':call comfortable_motion#flick(40)<CR>')
+vim.keymap.set('n', '<ScrollWheelUp>',   ':call comfortable_motion#flick(-40)<CR>')
+
 
