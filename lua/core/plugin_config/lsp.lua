@@ -20,7 +20,7 @@ local on_attach = function(client)
         }
     )
 
-    require "completion".on_attach(client)
+    -- require "completion".on_attach(client)
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
     end
